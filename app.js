@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const app = express();
 const port = process.env.PORT || 5000;
 
+const keys = require("./config/keys");
+
 mongoose.connect(
   "mongodb://julio:1sanchez@ds159661.mlab.com:59661/storybook_db",
   { useNewUrlParser: true },
