@@ -1,4 +1,5 @@
 const express = require("express");
+const exphbs = require("express-handlebars");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -11,8 +12,18 @@ require("./config/passport")(passport);
 
 //Load Routes
 const auth = require("./routes/auth");
+const index = require("./routes/index");
 
 const app = express();
+
+//Handlebars Middleware
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
 
 //Passport Middleware
 app.use(passport.initialize());
@@ -39,6 +50,7 @@ mongoose
 
 //Use Routes
 app.use("/auth", auth);
+app.use("/", index);
 
 app.use(cookieParser());
 app.use(
@@ -48,10 +60,6 @@ app.use(
     saveUninitialized: false
   })
 );
-
-app.get("/", (req, res) => {
-  res.send("Hello from index");
-});
 
 app.listen(port, () => {
   console.log(`Listening on port.... ${port}`);
